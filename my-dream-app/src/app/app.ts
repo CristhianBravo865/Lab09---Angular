@@ -1,41 +1,39 @@
 import { Component } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { HelloWorldComponent } from './hello-world/hello-world';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    HelloWorldComponent, // tu componente
+    CommonModule,        // para *ngIf, *ngFor
+    RouterModule         // para <router-outlet>
+  ],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class App {
-  title = 'my-dream-app';
-  name: string;
-  email: string;
-  webpage: string;
-  hobbies: string[];
-  showHobbies: boolean;
-
-  constructor() {
-    console.log("Constructor working...");
-    this.name = "Cristhian Bravo";
-    this.email = "cbravoa@unsa.edu.pe";
-    this.webpage = "http://www.unsa.edu.pe";
-    this.hobbies = ["Futbol", "Programación", "Videojuegos"];
-    this.showHobbies = false;
-  }
+export class AppComponent {
+  title = 'Mi título';
+  name = 'Tu nombre';
+  email = 'ejemplo@email.com';
+  webpage = 'https://tusitio.com';
+  hobbies = ['Leer', 'Programar', 'Correr'];
+  show = false;
 
   toggleHobbies() {
-    this.showHobbies = !this.showHobbies;
-  }
-  showhobbies() {
-    return this.showHobbies;
+    this.show = !this.show;
   }
 
-  newHobby(hobby: any) {
-  this.hobbies.push(hobby.value);
-  hobby.value = "";
-  return false;
+  showhobbies() {
+    return this.show;
+  }
+
+  newHobby(hobby: string) {
+    this.hobbies.push(hobby);
+  }
 }
-}
+
+bootstrapApplication(AppComponent);

@@ -17,11 +17,14 @@
 
   <a [href]="webpage" target="_blank">Visita mi sitio Web</a>
 </div>
-<form (submit)="newHobby(hobby)">
-  <input #hobby type="text" placeholder="hobby">
+<form (submit)="newHobby(hobby.value); $event.preventDefault()">
+  <input #hobby />
+  <button type="submit">Agregar hobby</button>
 </form>
 
 
 <div class="black">
   <h1>{{ title }}</h1>
 </div>
+<app-hello-world></app-hello-world>
+
