@@ -13,3 +13,10 @@
   color: red;
   padding: 20px;
 }
+.btn {
+  padding: 20px;
+  color:green;
+  background-color: brown;
+  display: block;
+  margin:3px;
+}
