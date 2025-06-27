@@ -32,4 +32,10 @@ export class App {
   showhobbies() {
     return this.showHobbies;
   }
+
+  newHobby(hobby: any) {
+  this.hobbies.push(hobby.value);
+  hobby.value = "";
+  return false;
+}
 }

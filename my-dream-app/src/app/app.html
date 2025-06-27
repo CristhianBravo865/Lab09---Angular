@@ -17,6 +17,10 @@
 
   <a [href]="webpage" target="_blank">Visita mi sitio Web</a>
 </div>
+<form (submit)="newHobby(hobby)">
+  <input #hobby type="text" placeholder="hobby">
+</form>
+
 
 <div class="black">
   <h1>{{ title }}</h1>
