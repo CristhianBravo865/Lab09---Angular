@@ -1,5 +1,11 @@
 <router-outlet></router-outlet>
 
+<ul>
+  <li *ngFor="let user of users">
+    <app-user [nameUser]="user"></app-user>
+  </li>
+</ul>
+
 <div class="black">
   <h1>{{ title }}</h1>
 </div>
@@ -22,9 +28,8 @@
   <button type="submit">Agregar hobby</button>
 </form>
 
-
 <div class="black">
-  <h1>{{ title }}</h1>
+  <h1> helloworld </h1>
 </div>
 <app-hello-world></app-hello-world>
 
