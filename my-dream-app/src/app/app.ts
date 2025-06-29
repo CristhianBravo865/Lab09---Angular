@@ -8,18 +8,18 @@ import { RouterModule } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [
-    HelloWorldComponent, // tu componente
-    CommonModule,        // para *ngIf, *ngFor
-    RouterModule         // para <router-outlet>
+    HelloWorldComponent, 
+    CommonModule,       
+    RouterModule        
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
 export class AppComponent {
-  title = 'Mi título';
-  name = 'Tu nombre';
-  email = 'ejemplo@email.com';
-  webpage = 'https://tusitio.com';
+  title = 'Titulo';
+  name = 'Cristhian Bravo';
+  email = 'cbravoa@unsa.edu.pe';
+  webpage = 'https://www.unsa.edu.pe/';
   hobbies = ['Leer', 'Programar', 'Correr'];
   show = false;
 
