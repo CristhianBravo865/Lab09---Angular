@@ -9,10 +9,10 @@ import { UserComponent } from './user/user';
   selector: 'app-root',
   standalone: true,
   imports: [
-    HelloWorldComponent, 
-    CommonModule,       
+    HelloWorldComponent,
+    CommonModule,
     RouterModule,
-    UserComponent        
+    UserComponent
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
@@ -38,6 +38,10 @@ export class AppComponent {
   newHobby(hobby: string) {
     this.hobbies.push(hobby);
   }
+  sayHello() {
+    alert('Hola desde AppComponent');
+  }
+
 }
 
 bootstrapApplication(AppComponent);
