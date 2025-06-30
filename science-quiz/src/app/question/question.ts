@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from '../question';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-question',
@@ -15,11 +16,16 @@ export class QuestionComponent {
   question: any;
   selectedAnswer: string = '';
   showFeedback: boolean = false;
+  timer: number = 10;
+  intervalId: any;
+  timeExpired: boolean = false;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
     private questionService: QuestionService
+
   ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -28,22 +34,24 @@ export class QuestionComponent {
         const questions = this.questionService.getQuestions();
         if (this.questionIndex < questions.length) {
           this.question = questions[this.questionIndex];
-          this.resetState(); // ✅ Reinicia estado al cargar pregunta
+          this.resetState();
+          this.startTimer();
         } else {
           this.router.navigate(['/results']);
         }
       }
     });
+
   }
 
   selectAnswer(answer: string) {
-  this.selectedAnswer = answer;
-  this.showFeedback = true;
+    this.selectedAnswer = answer;
+    this.showFeedback = true;
 
-  if (this.isCorrect()) {
-    this.questionService.incrementScore(); 
+    if (this.isCorrect()) {
+      this.questionService.incrementScore();
+    }
   }
-}
 
 
   nextQuestion() {
@@ -56,8 +64,31 @@ export class QuestionComponent {
   }
 
   resetState() {
+    this.clearTimer();
     this.selectedAnswer = '';
     this.showFeedback = false;
+    this.timeExpired = false;
   }
-  
+
+  startTimer() {
+    this.timer = 10;
+    this.timeExpired = false;
+
+    this.intervalId = setInterval(() => {
+      this.timer--;
+
+      this.cdRef.detectChanges(); 
+
+      if (this.timer === 0) {
+        this.timeExpired = true;
+        clearInterval(this.intervalId);
+        this.showFeedback = true;
+      }
+    }, 1000);
+  }
+
+
+  clearTimer() {
+    clearInterval(this.intervalId);
+  }
 }

@@ -1,13 +1,10 @@
 <div class="question-container" *ngIf="question">
   <h2>Pregunta {{ questionIndex + 1 }}</h2>
   <p>{{ question.question }}</p>
-
+  <p>Tiempo restante: {{ timer }} segundos</p>
   <ul>
     <li *ngFor="let option of question.options">
-      <button
-        (click)="selectAnswer(option)"
-        [disabled]="showFeedback"
-      >
+      <button (click)="selectAnswer(option)" [disabled]="showFeedback || timeExpired">
         {{ option }}
       </button>
     </li>
