@@ -1,1 +1,23 @@
-<p>question works!</p>
+<div class="question-container" *ngIf="question">
+  <h2>Pregunta {{ questionIndex + 1 }}</h2>
+  <p>{{ question.question }}</p>
+
+  <ul>
+    <li *ngFor="let option of question.options">
+      <button
+        (click)="selectAnswer(option)"
+        [disabled]="showFeedback"
+      >
+        {{ option }}
+      </button>
+    </li>
+  </ul>
+
+  <div *ngIf="showFeedback">
+    <p *ngIf="isCorrect()" class="correct">¡Correcto!</p>
+    <p *ngIf="!isCorrect()" class="incorrect">
+      Incorrecto. La respuesta correcta es: {{ question.correctAnswer }}
+    </p>
+    <button (click)="nextQuestion()">Siguiente</button>
+  </div>
+</div>

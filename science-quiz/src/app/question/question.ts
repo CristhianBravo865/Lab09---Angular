@@ -1,86 +1,57 @@
-import { Injectable } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionService } from '../question';
 
-export interface Question {
-  question: string;
-  options: string[];
-  correctAnswer: string;
-}
-
-@Injectable({
-  providedIn: 'root'
+@Component({
+  selector: 'app-question',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './question.html',
+  styleUrl: './question.css'
 })
-export class QuestionService {
+export class QuestionComponent {
+  questionIndex: number = 0;
+  question: any;
+  selectedAnswer: string = '';
+  showFeedback: boolean = false;
 
-  private questions: Question[] = [
-    {
-      question: '¿Cuál es la fórmula química del agua?',
-      options: ['H2O', 'CO2', 'NaCl'],
-      correctAnswer: 'H2O'
-    },
-    {
-      question: '¿Cuál es la ley de Newton que describe la acción y la reacción?',
-      options: ['Primera ley', 'Segunda ley', 'Tercera ley'],
-      correctAnswer: 'Tercera ley'
-    },
-    {
-      question: '¿Cuál es el planeta más grande del sistema solar?',
-      options: ['Marte', 'Júpiter', 'Saturno'],
-      correctAnswer: 'Júpiter'
-    },
-    {
-      question: '¿Cuál es el hueso más largo del cuerpo humano?',
-      options: ['Fémur', 'Húmero', 'Tibia'],
-      correctAnswer: 'Fémur'
-    },
-    {
-      question: '¿Cuál es el proceso mediante el cual las plantas convierten la luz solar en energía?',
-      options: ['Fotosíntesis', 'Respiración', 'Transpiración'],
-      correctAnswer: 'Fotosíntesis'
-    },
-    {
-      question: '¿Cuál es la unidad básica de la estructura de los ácidos nucleicos (ADN y ARN)?',
-      options: ['Aminoácido', 'Nucleótido', 'Glucosa'],
-      correctAnswer: 'Nucleótido'
-    },
-    {
-      question: '¿Cuál es la velocidad de la luz en el vacío?',
-      options: ['300,000 km/s', '150,000 km/s', '100,000 km/s'],
-      correctAnswer: '300,000 km/s'
-    },
-    {
-      question: '¿Qué elemento químico tiene el símbolo "Fe" en la tabla periódica?',
-      options: ['Hierro', 'Plomo', 'Zinc'],
-      correctAnswer: 'Hierro'
-    },
-    {
-      question: '¿Qué tipo de energía se produce a partir del núcleo de un átomo en un proceso de fusión nuclear?',
-      options: ['Energía térmica', 'Energía solar', 'Energía nuclear'],
-      correctAnswer: 'Energía nuclear'
-    },
-    {
-      question: '¿Cuál es el órgano del cuerpo humano responsable de filtrar la sangre y eliminar los desechos?',
-      options: ['Riñón', 'Hígado', 'Pulmón'],
-      correctAnswer: 'Riñón'
-    },
-    {
-      question: '¿Quién descubrió la ley de la gravitación universal?',
-      options: ['Albert Einstein', 'Isaac Newton', 'Galileo Galilei'],
-      correctAnswer: 'Isaac Newton'
-    }
-  ];
-
-  constructor() { }
-
-  getQuestions(): Question[] {
-    return this.questions;
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private questionService: QuestionService
+  ) {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id !== null) {
+        this.questionIndex = parseInt(id, 10);
+        const questions = this.questionService.getQuestions();
+        if (this.questionIndex < questions.length) {
+          this.question = questions[this.questionIndex];
+          this.resetState(); // ✅ Reinicia estado al cargar pregunta
+        } else {
+          this.router.navigate(['/results']);
+        }
+      }
+    });
   }
 
-  getQuestion(index: number): Question | null {
-    return this.questions[index] || null;
+  selectAnswer(answer: string) {
+    this.selectedAnswer = answer;
+    this.showFeedback = true;
   }
 
-  getTotalQuestions(): number {
-    return this.questions.length;
+  nextQuestion() {
+    const nextIndex = this.questionIndex + 1;
+    this.router.navigate(['/question', nextIndex]);
+  }
+
+  isCorrect(): boolean {
+    return this.selectedAnswer === this.question.correctAnswer;
+  }
+
+  resetState() {
+    this.selectedAnswer = '';
+    this.showFeedback = false;
   }
 }
-
