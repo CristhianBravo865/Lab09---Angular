@@ -69,6 +69,8 @@ export class QuestionService {
     }
   ];
 
+  private score: number = 0; 
+
   constructor() { }
 
   getQuestions(): Question[] {
@@ -81,5 +83,17 @@ export class QuestionService {
 
   getTotalQuestions(): number {
     return this.questions.length;
+  }
+
+  incrementScore() {
+    this.score++;
+  }
+
+  getScore(): number {
+    return this.score;
+  }
+
+  resetScore() {
+    this.score = 0;
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { QuestionService } from '../question';
 
 @Component({
   selector: 'app-results',
@@ -10,9 +11,19 @@ import { Router } from '@angular/router';
   styleUrl: './results.css'
 })
 export class ResultsComponent {
-  constructor(private router: Router) {}
+  score: number = 0;
+  total: number = 0;
+
+  constructor(
+    private router: Router,
+    private questionService: QuestionService
+  ) {
+    this.score = this.questionService.getScore();
+    this.total = this.questionService.getTotalQuestions();
+  }
 
   restartGame() {
+    this.questionService.resetScore();
     this.router.navigate(['/']);
   }
 }

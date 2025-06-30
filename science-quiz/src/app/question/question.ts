@@ -37,9 +37,14 @@ export class QuestionComponent {
   }
 
   selectAnswer(answer: string) {
-    this.selectedAnswer = answer;
-    this.showFeedback = true;
+  this.selectedAnswer = answer;
+  this.showFeedback = true;
+
+  if (this.isCorrect()) {
+    this.questionService.incrementScore(); 
   }
+}
+
 
   nextQuestion() {
     const nextIndex = this.questionIndex + 1;
@@ -54,4 +59,5 @@ export class QuestionComponent {
     this.selectedAnswer = '';
     this.showFeedback = false;
   }
+  
 }
