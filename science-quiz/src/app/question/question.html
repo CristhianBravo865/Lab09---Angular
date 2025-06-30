@@ -12,8 +12,11 @@
 
   <div *ngIf="showFeedback">
     <p *ngIf="isCorrect()" class="correct">¡Correcto!</p>
-    <p *ngIf="!isCorrect()" class="incorrect">
+    <p *ngIf="!isCorrect() && !timeExpired && selectedAnswer" class="incorrect">
       Incorrecto. La respuesta correcta es: {{ question.correctAnswer }}
+    </p>
+    <p *ngIf="timeExpired && !selectedAnswer" class="incorrect">
+      ⏰ Se te acabó el tiempo. La respuesta correcta era: {{ question.correctAnswer }}
     </p>
     <button (click)="nextQuestion()">Siguiente</button>
   </div>

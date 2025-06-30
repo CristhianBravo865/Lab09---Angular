@@ -19,13 +19,13 @@ export class QuestionComponent {
   timer: number = 10;
   intervalId: any;
   timeExpired: boolean = false;
+  answered: boolean = false;
 
   constructor(
     private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
     private questionService: QuestionService
-
   ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -41,12 +41,16 @@ export class QuestionComponent {
         }
       }
     });
-
   }
 
   selectAnswer(answer: string) {
+    if (this.answered) return;
+
+    this.clearTimer();
+
     this.selectedAnswer = answer;
     this.showFeedback = true;
+    this.answered = true;
 
     if (this.isCorrect()) {
       this.questionService.incrementScore();
@@ -68,6 +72,7 @@ export class QuestionComponent {
     this.selectedAnswer = '';
     this.showFeedback = false;
     this.timeExpired = false;
+    this.answered = false;
   }
 
   startTimer() {
@@ -76,17 +81,20 @@ export class QuestionComponent {
 
     this.intervalId = setInterval(() => {
       this.timer--;
-
-      this.cdRef.detectChanges(); 
+      this.cdRef.detectChanges();
 
       if (this.timer === 0) {
+        alert('Se te acabó el tiempo.');
         this.timeExpired = true;
-        clearInterval(this.intervalId);
+        this.answered = true;
+        this.selectedAnswer = '';
         this.showFeedback = true;
+        clearInterval(this.intervalId);
+        this.cdRef.detectChanges();
       }
+
     }, 1000);
   }
-
 
   clearTimer() {
     clearInterval(this.intervalId);
